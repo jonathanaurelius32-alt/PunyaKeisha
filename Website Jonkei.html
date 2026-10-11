@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for romantic icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        roseGold: {
+                            50: '#fcf6f5',
+                            100: '#f7eae8',
+                            200: '#edd5d2',
+                            300: '#dfb5b0',
+                            400: '#cc8e86',
+                            500: '#b86b62',
+                            600: '#9e534a',
+                            700: '#84433d',
+                        },
+                        cream: '#fdfbf7',
+                        softPink: '#fff0f3',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fdfbf7;
+            color: #4a403a;
+            overflow-x: hidden;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+        .floating-heart {
+            position: fixed;
+            color: #cc8e86;
+            animation: floatUp 6s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .polaroid {
+            transition: all 0.3s ease;
+        }
+        .polaroid:hover {
+            transform: translateY(-8px) rotate(0deg) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(184, 107, 98, 0.15), 0 10px 10px -5px rgba(184, 107, 98, 0.04);
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f7eae8; }
+        ::-webkit-scrollbar-thumb { background: #cc8e86; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-cream min-h-screen text-stone-700 selection:bg-roseGold-200 selection:text-roseGold-700">
+
+    <!-- PASSCODE LOCK SCREEN OVERLAY -->
+    <div id="passcode-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-roseGold-50 px-4 transition-all duration-700">
+        <div class="max-w-md w-full bg-white/90 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-roseGold-200 text-center relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-roseGold-200 rounded-full blur-2xl opacity-50"></div>
+            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-pink-200 rounded-full blur-2xl opacity-50"></div>
+
+            <div class="relative z-10">
+                <div class="w-16 h-16 mx-auto mb-5 bg-roseGold-100 rounded-full flex items-center justify-center text-roseGold-500 shadow-inner">
+                    <i class="fa-solid fa-lock text-2xl"></i>
+                </div>
+                <span class="text-xs uppercase tracking-widest text-roseGold-500 font-semibold">Protected Surprise</span>
+                <h1 class="font-serif text-2xl md:text-3xl font-bold text-stone-800 mt-2 mb-2">Enter Secret Passcode</h1>
+                <p class="text-stone-500 text-xs md:text-sm mb-6">
+                    Hint: Enter our special date or passcode (e.g. <span class="font-semibold text-roseGold-600">1015</span> or your birthday)
+                </p>
+
+                <!-- Passcode Input Form -->
+                <div id="passcode-container" class="space-y-4">
+                    <div class="relative max-w-xs mx-auto">
+                        <input type="password" id="passcode-input" maxlength="6" placeholder="••••" 
+                            class="w-full py-3.5 px-4 text-center tracking-[0.5em] text-2xl font-bold bg-roseGold-50 border border-roseGold-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-roseGold-400 text-stone-800 placeholder:tracking-normal placeholder:font-normal placeholder:text-sm placeholder:text-stone-400"
+                            onkeypress="handleKeyPress(event)">
+                    </div>
+                    
+                    <p id="error-message" class="text-xs text-red-500 h-4 font-medium transition-opacity opacity-0">Incorrect passcode, try again! ❤️</p>
+
+                    <button onclick="verifyPasscode()" class="w-full max-w-xs mx-auto py-3.5 px-6 bg-gradient-to-r from-roseGold-400 to-roseGold-600 text-white font-medium rounded-2xl shadow-lg shadow-roseGold-300/50 hover:shadow-xl hover:from-roseGold-500 hover:to-roseGold-700 transition-all duration-300 flex items-center justify-center gap-2 group">
+                        <span>Unlock Surprise</span>
+                        <i class="fa-solid fa-key group-hover:rotate-45 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENVELOPE MODAL (Appears after passcode verification) -->
+    <div id="envelope-overlay" class="fixed inset-0 z-40 flex items-center justify-center bg-roseGold-50/90 backdrop-blur-sm px-4 transition-all duration-700 hidden">
+        <div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-roseGold-200 text-center relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto mb-6 bg-roseGold-100 rounded-full flex items-center justify-center text-roseGold-500 shadow-inner animate-bounce">
+                <i class="fa-solid fa-envelope-open-heart text-3xl"></i>
+            </div>
+            <span class="text-xs uppercase tracking-widest text-roseGold-500 font-semibold">Passcode Correct! ✨</span>
+            <h2 class="font-serif text-3xl font-bold text-stone-800 mt-2 mb-4">A Letter For You</h2>
+            <p class="text-stone-600 text-sm mb-8 leading-relaxed">
+                You unlocked the secret code correctly. Click below to open your personalized birthday celebration page!
+            </p>
+            <button onclick="openWebsite()" class="w-full py-4 px-6 bg-gradient-to-r from-roseGold-400 to-roseGold-600 text-white font-medium rounded-2xl shadow-lg shadow-roseGold-300/50 hover:shadow-xl transition-all flex items-center justify-center gap-2 group">
+                <span>Enter Main Website</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN WEBSITE CONTENT (Hidden initially) -->
+    <div id="main-content" class="opacity-0 transition-opacity duration-1000 hidden">
+
+        <!-- Background Floating Hearts Container -->
+        <div id="hearts-container"></div>
+
+        <!-- Navigation Bar -->
+        <nav class="sticky top-0 z-30 bg-cream/80 backdrop-blur-md border-b border-roseGold-100 py-4 px-6 md:px-12 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-roseGold-200 flex items-center justify-center text-roseGold-700">
+                    <i class="fa-solid fa-heart text-xs"></i>
+                </span>
+                <span class="font-serif font-bold text-lg tracking-wide text-stone-800">For My Forever ❤️</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-stone-600">
+                <a href="#countdown" class="hover:text-roseGold-600 transition-colors">Countdown</a>
+                <a href="#gallery" class="hover:text-roseGold-600 transition-colors">Memories</a>
+                <a href="#letter" class="hover:text-roseGold-600 transition-colors">Love Letter</a>
+                <a href="#reasons" class="hover:text-roseGold-600 transition-colors">Why I Love You</a>
+            </div>
+            <button onclick="toggleMusic()" id="music-btn" class="bg-roseGold-100 hover:bg-roseGold-200 text-roseGold-700 px-4 py-2 rounded-full text-xs font-medium flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-music"></i>
+                <span id="music-text">Play Our Song</span>
+            </button>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <header class="relative pt-16 pb-24 px-6 md:px-12 max-w-6xl mx-auto text-center">
+            <div class="inline-block mb-4 px-4 py-1.5 bg-roseGold-100 text-roseGold-700 rounded-full text-xs font-semibold tracking-wider uppercase">
+                Happy Birthday, Beautiful ✨
+            </div>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-stone-900 tracking-tight mb-6">
+                Today is All About <span class="text-roseGold-500 italic">You</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-stone-600 text-base md:text-lg leading-relaxed mb-10">
+                Every single day with you feels like a celebration. Thank you for filling my world with your endless grace, laughter, and love. Let's make today unforgettable.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#letter" class="w-full sm:w-auto px-8 py-4 bg-stone-900 text-cream rounded-2xl font-medium hover:bg-stone-800 transition-all shadow-md">
+                    Read Your Letter
+                </a>
+                <a href="#gallery" class="w-full sm:w-auto px-8 py-4 bg-white border border-roseGold-200 text-stone-800 rounded-2xl font-medium hover:bg-roseGold-50 transition-all shadow-sm">
+                    View Our Memories
+                </a>
+            </div>
+        </header>
+
+        <!-- COUNTDOWN SECTION -->
+        <section id="countdown" class="py-16 px-6 md:px-12 bg-white/50 border-y border-roseGold-100">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-stone-800 mb-3">Celebrating You Every Second</h2>
+                <p class="text-stone-500 text-sm mb-8">Time counting down to our next magical moment together or celebrating your special day!</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-roseGold-100">
+                        <span id="days" class="font-serif text-3xl md:text-4xl font-bold text-roseGold-600 block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-stone-400 mt-1 block">Days</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-roseGold-100">
+                        <span id="hours" class="font-serif text-3xl md:text-4xl font-bold text-roseGold-600 block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-stone-400 mt-1 block">Hours</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-roseGold-100">
+                        <span id="minutes" class="font-serif text-3xl md:text-4xl font-bold text-roseGold-600 block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-stone-400 mt-1 block">Minutes</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-roseGold-100">
+                        <span id="seconds" class="font-serif text-3xl md:text-4xl font-bold text-roseGold-600 block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-stone-400 mt-1 block">Seconds</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- POLAROID PHOTO GALLERY -->
+        <section id="gallery" class="py-24 px-6 md:px-12 max-w-6xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <span class="text-xs uppercase tracking-widest text-roseGold-500 font-semibold">Our Favorite Moments</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-stone-800 mt-2">Captured Memories</h2>
+                <p class="text-stone-600 text-sm mt-3">A small collection of my absolute favorite chapters with you. Each picture tells our story.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform -rotate-1">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=600" alt="Memory 1" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+1'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">Our first cozy date together ☕</p>
+                </div>
+
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform rotate-2 mt-0 md:mt-4">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&q=80&w=600" alt="Memory 2" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+2'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">That unforgettable sunset view 🌅</p>
+                </div>
+
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform -rotate-2">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=600" alt="Memory 3" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+3'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">Laughter that lasted for hours 😂</p>
+                </div>
+
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform rotate-1">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=600" alt="Memory 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+4'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">Just you being effortlessly gorgeous ✨</p>
+                </div>
+
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform -rotate-2 mt-0 md:mt-4">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Memory 5" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+5'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">My favorite person in the world 🤍</p>
+                </div>
+
+                <div class="polaroid bg-white p-4 pb-6 rounded-2xl shadow-md border border-stone-100 transform rotate-2">
+                    <div class="aspect-square overflow-hidden rounded-xl bg-stone-100 mb-4">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600" alt="Memory 6" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x600/f7eae8/b86b62?text=Memory+6'">
+                    </div>
+                    <p class="font-serif text-stone-700 text-center text-sm">Here's to a lifetime more together 🥂</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROMANTIC LOVE LETTER SECTION -->
+        <section id="letter" class="py-24 px-6 md:px-12 bg-roseGold-50/50 border-y border-roseGold-100 relative overflow-hidden">
+            <div class="max-w-3xl mx-auto bg-white p-8 md:p-14 rounded-3xl shadow-xl border border-roseGold-200 relative">
+                <div class="absolute top-6 right-6 w-12 h-12 bg-roseGold-100 rounded-full flex items-center justify-center text-roseGold-500 shadow-sm">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+
+                <span class="text-xs uppercase tracking-widest text-roseGold-500 font-semibold block mb-2">A Letter For You</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-stone-900 mb-8">My Dearest Love,</h2>
+
+                <div class="space-y-6 text-stone-700 font-light leading-relaxed text-base md:text-lg">
+                    <p>
+                        Happy, happy birthday to the most wonderful, kind-hearted, and gorgeous girl in the universe. Words will never fully capture how grateful I am to have you walk into my life and stay.
+                    </p>
+                    <p>
+                        You bring warmth into every room you enter and light up my darkest days with just a smile. Loving you is the easiest and most natural thing I have ever done. Thank you for your patience, your sweet laughter, and for making ordinary days feel like pure magic.
+                    </p>
+                    <p>
+                        On your special day, I wish you all the happiness your heart can hold, endless adventures, and the realization of every dream you hold close. I promise to keep cheering for you, supporting you, and loving you more with every passing sunrise.
+                    </p>
+                </div>
+
+                <div class="mt-10 pt-6 border-t border-roseGold-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <p class="font-serif italic text-stone-800 text-lg">Forever yours,</p>
+                        <p class="font-bold text-roseGold-600 mt-1">[Your Name Here]</p>
+                    </div>
+                    <button onclick="triggerConfetti()" class="px-6 py-3 bg-roseGold-100 hover:bg-roseGold-200 text-roseGold-700 font-medium rounded-xl text-sm transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Send Birthday Kisses</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- REASONS WHY I LOVE YOU -->
+        <section id="reasons" class="py-24 px-6 md:px-12 max-w-5xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <span class="text-xs uppercase tracking-widest text-roseGold-500 font-semibold">Endless Reasons</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold text-stone-800 mt-2">Why I Fall For You Every Day</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-roseGold-100 text-center hover:shadow-md transition-all">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-roseGold-100 rounded-2xl flex items-center justify-center text-roseGold-600 text-xl">
+                        <i class="fa-solid fa-face-smile-beam"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-800 mb-3">Your Radiant Smile</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">It has the absolute power to turn my worst days around in an instant and brighten up the entire world.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-roseGold-100 text-center hover:shadow-md transition-all">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-roseGold-100 rounded-2xl flex items-center justify-center text-roseGold-600 text-xl">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-800 mb-3">Your Kind Heart</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">The empathy, care, and compassion you show to everyone around you inspires me to be a better person.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-roseGold-100 text-center hover:shadow-md transition-all">
+                    <div class="w-14 h-14 mx-auto mb-6 bg-roseGold-100 rounded-2xl flex items-center justify-center text-roseGold-600 text-xl">
+                        <i class="fa-solid fa-infinity"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-stone-800 mb-3">Our Endless Laughter</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">No matter how silly the joke or how random our conversations, you are my favorite person to laugh with.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-stone-900 text-cream py-12 px-6 text-center">
+            <div class="max-w-xl mx-auto">
+                <div class="w-10 h-10 mx-auto mb-4 bg-roseGold-600/30 rounded-full flex items-center justify-center text-roseGold-300">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold mb-2">Happy Birthday, My Love</h3>
+                <p class="text-stone-400 text-sm mb-6">Built with all my heart, just for you.</p>
+                <p class="text-xs text-stone-500">&copy; 2026 Crafted with love in VS Code. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // CORRECT PASSCODE (You can change this in VS Code to your anniversary or birthday, e.g., "1015")
+        const CORRECT_PASSCODE = "1015";
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                verifyPasscode();
+            }
+        }
+
+        // Verify Passcode Function
+        function verifyPasscode() {
+            const input = document.getElementById('passcode-input');
+            const errorMsg = document.getElementById('error-message');
+            const container = document.getElementById('passcode-overlay');
+            const envelopeModal = document.getElementById('envelope-overlay');
+
+            if (input.value.trim() === CORRECT_PASSCODE) {
+                errorMsg.style.opacity = '0';
+                container.style.opacity = '0';
+                setTimeout(() => {
+                    container.style.display = 'none';
+                    envelopeModal.classList.remove('hidden');
+                }, 500);
+            } else {
+                errorMsg.style.opacity = '1';
+                input.classList.add('animate-shake');
+                setTimeout(() => {
+                    input.classList.remove('animate-shake');
+                }, 400);
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        // Open Website function after clicking the envelope modal
+        function openWebsite() {
+            const envelopeModal = document.getElementById('envelope-overlay');
+            const mainContent = document.getElementById('main-content');
+            
+            envelopeModal.style.opacity = '0';
+            setTimeout(() => {
+                envelopeModal.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                }, 50);
+            }, 500);
+
+            startFloatingHearts();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Floating Hearts Generator
+        function startFloatingHearts() {
+            const container = document.getElementById('hearts-container');
+            const icons = ['fa-heart', 'fa-sparkles', 'fa-star'];
+
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart', 'fa-solid');
+                const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+                heart.classList.add(randomIcon);
+
+                const startLeft = Math.random() * 100;
+                const size = Math.random() * 16 + 12;
+                const duration = Math.random() * 3 + 4;
+
+                heart.style.left = startLeft + 'vw';
+                heart.style.fontSize = size + 'px';
+                heart.style.animationDuration = duration + 's';
+
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }, 400);
+        }
+
+        // Countdown Timer Logic
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let targetDate = new Date(currentYear, 9, 15, 0, 0, 0); 
+            
+            if (now > targetDate) {
+                targetDate = new Date(currentYear + 1, 9, 15, 0, 0, 0);
+            }
+
+            const diff = Math.abs(now - targetDate);
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        // Music toggle simulation
+        let isPlaying = false;
+        function toggleMusic() {
+            const btnText = document.getElementById('music-text');
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                btnText.innerText = "Playing... 🎵";
+            } else {
+                btnText.innerText = "Play Our Song";
+            }
+        }
+
+        // Confetti effect burst
+        function triggerConfetti() {
+            for (let i = 0; i < 10; i++) {
+                const burst = document.createElement('div');
+                burst.classList.add('fixed', 'z-50', 'text-roseGold-500', 'font-bold', 'pointer-events-none');
+                burst.innerHTML = '❤️';
+                burst.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + 'px';
+                burst.style.top = (window.innerHeight / 2 + (Math.random() * 100 - 50)) + 'px';
+                burst.style.transition = 'all 1s ease-out';
+                document.body.appendChild(burst);
+
+                setTimeout(() => {
+                    burst.style.transform = `translate(${(Math.random() * 200 - 100)}px, -150px) scale(1.5)`;
+                    burst.style.opacity = '0';
+                }, 50);
+
+                setTimeout(() => {
+                    burst.remove();
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
